@@ -1,0 +1,259 @@
+/* General layout */
+.app-container {
+  background-color: #0d0d0d;
+  color: #eaeaea;
+  min-height: 100vh;
+  padding: 40px;
+  font-family: "Georgia", serif;
+  /* Fill screen and allow natural flow/scrolling */
+  display: block;
+  border-radius: 10px;
+  width: min(720px, 90vw);
+  margin: 0 auto;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.5);
+}
+
+.scene-title {
+  font-size: 1.5rem;
+  text-align: center;
+  margin-bottom: 12px;
+  color: #f7eac3;
+}
+
+.scene-details p {
+  margin: 4px 0;
+  line-height: 1.4;
+  font-size: 0.95rem;
+}
+
+.scene-divider {
+  border: 0.5px solid #333;
+  margin: 10px 0 15px 0;
+}
+
+/* Caesar info */
+.caesar-info p {
+  margin: 6px 0;
+  line-height: 1.4;
+  font-size: 1rem;
+}
+
+/* Buttons */
+.button-group {
+  display: flex;
+  gap: 12px;
+  margin-top: 10px;
+}
+
+.btn {
+  flex: 1;
+  padding: 8px 12px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: all 0.2s ease;
+  font-size: 0.9rem;
+}
+
+.ambush-btn {
+  background: #444;
+  color: #fff;
+}
+
+.ambush-btn:hover {
+  background: #666;
+}
+
+.kill-btn {
+  background: #a00;
+  color: #fff;
+}
+
+.kill-btn:hover {
+  background: #c00;
+}
+
+/* Event log */
+.event-log {
+  margin-top: 20px;
+}
+
+.event-log h4 {
+  margin-bottom: 6px;
+  font-size: 1.1rem;
+  color: #f7eac3;
+}
+
+.event-log ul {
+  list-style-type: square;
+  padding-left: 20px;
+  line-height: 1.5;
+  font-size: 0.9rem;
+}
+
+/* --- Animated Stage (non-violent) --- */
+.stage {
+  position: relative;
+  width: 100%;
+  height: 340px; /* a bit taller to avoid clipping */
+  margin: 24px 0 0;
+  border-radius: 12px;
+  overflow: hidden;
+  background: linear-gradient(180deg, #1b1b1b 0%, #0f0f0f 100%);
+  box-shadow: inset 0 0 40px rgba(0,0,0,0.6), 0 8px 24px rgba(0,0,0,0.5);
+}
+
+.backdrop {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+}
+
+/* Curtains */
+.curtain {
+  position: absolute;
+  top: 0;
+  width: 35%;
+  height: 100%;
+  background: repeating-linear-gradient(
+    90deg,
+    #3b0d0d 0 14px,
+    #5a0f0f 14px 28px
+  );
+  filter: drop-shadow(0 0 10px rgba(0,0,0,0.5));
+  transform: translateY(-100%);
+  animation: curtainDrop 900ms ease-out forwards;
+}
+
+.actor {
+  position: relative;
+  width: 44px;
+  margin-inline: auto;
+  transition: transform 650ms cubic-bezier(.2,.8,.2,1);
+  will-change: transform;
+}
+
+.actor .actor-body {
+  width: 44px;
+  height: 64px;
+  border-radius: 8px 8px 4px 4px;
+  background: #2b2b2b;
+  border: 2px solid #555;
+  position: relative;
+  opacity: 1; /* always visible */
+  transform: translateY(0) translateZ(0); /* stable base for bob */
+  animation: bob 3.6s ease-in-out 1.2s infinite;
+  will-change: transform;
+  backface-visibility: hidden;
+}
+
+/* label styles defined later (kept here intentionally empty previously) */
+
+.curtain.left { left: 0; border-top-right-radius: 10px; }
+.curtain.right { right: 0; border-top-left-radius: 10px; }
+
+@keyframes curtainDrop {
+  to { transform: translateY(0); }
+}
+
+.actors {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  align-items: end;
+  padding: 0 16px 64px; /* extra bottom room for labels */
+  pointer-events: none;
+  z-index: 2; /* above floor */
+}
+
+/* actor visuals handled via .actor-body; .actor is the grid item wrapper */
+
+.actor .label {
+  position: absolute;
+  bottom: -20px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 0.75rem;
+  color: #cfcfcf;
+}
+
+.actor .actor-body::before {
+  content: "";
+  position: absolute;
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  background: #d6c08d;
+  border: 2px solid #8f7b4d;
+  top: -18px;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.actor.caesar { grid-column: 4; }
+.actor.caesar .actor-body {
+  background: linear-gradient(180deg, #6b5 0%, #3a6 100%);
+  border-color: #7ccf87;
+}
+
+.actor.senator .actor-body {
+  background: linear-gradient(180deg, #555 0%, #333 100%);
+}
+
+.actor.s1 { grid-column: 2; }
+.actor.s2 { grid-column: 3; }
+.actor.s3 { grid-column: 5; }
+.actor.s4 { grid-column: 6; }
+
+/* cascade different enter delays via nth-child for subtle staggering */
+.actors .actor:nth-child(1) .actor-body { animation-delay: 420ms; }
+.actors .actor:nth-child(2) .actor-body { animation-delay: 520ms; }
+.actors .actor:nth-child(3) .actor-body { animation-delay: 600ms; }
+.actors .actor:nth-child(4) .actor-body { animation-delay: 680ms; }
+.actors .actor:nth-child(5) .actor-body { animation-delay: 760ms; }
+
+@keyframes enter {
+  from { opacity: 0; transform: translateY(20px) scale(0.96); }
+  to   { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+@keyframes bob {
+  0%, 100% { transform: translateY(0) scale(1); }
+  50% { transform: translateY(-4px) scale(1.01); }
+}
+
+/* On ambush, senators slide closer to Caesar (towards column 4) */
+.stage.ambush .actor.s1 { transform: translate(40px, -150px); transition-delay: 30ms; }
+.stage.ambush .actor.s2 { transform: translateX(24px); transition-delay: 60ms; }
+.stage.ambush .actor.s3 { transform: translateX(-24px); transition-delay: 60ms; }
+.stage.ambush .actor.s4 { transform: translate(-40px, -150px); transition-delay: 30ms; }
+
+/* On kill, rotate Caesar 90deg with a gentle ease */
+.actor.caesar .actor-body { transition: transform 500ms ease-in-out; }
+.stage.killed .actor.caesar .actor-body {
+  animation: none !important; /* stop bob so rotation isn't overridden */
+  transform: rotate(90deg);
+  transform-origin: bottom center;
+}
+
+/* Emphasize movement: briefly highlight senators on move */
+.stage.ambush .actor.senator .actor-body {
+  animation: pulseGlow 700ms ease-out 80ms 1;
+}
+
+@keyframes pulseGlow {
+  0% { box-shadow: 0 0 0 0 rgba(255, 230, 150, 0.0); }
+  35% { box-shadow: 0 0 0 4px rgba(255, 230, 150, 0.10); }
+  100% { box-shadow: 0 0 0 0 rgba(255, 230, 150, 0.0); }
+}
+
+.stage-floor {
+  position: absolute;
+  left: 0; right: 0; bottom: 0;
+  height: 54px;
+  background: linear-gradient(180deg, #2a1d12 0%, #1b130c 100%);
+  box-shadow: 0 -2px 0 #3a2a1c inset, 0 -12px 24px rgba(0,0,0,0.6) inset;
+  z-index: 1; /* behind actors */
+}
