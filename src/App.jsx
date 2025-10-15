@@ -3,6 +3,8 @@ import TheaterScene from "./TheaterScene";
 import "./TheaterScene.css";
 
 export default class App extends React.Component {
+  
+  
   render() {
     return (
       <div className="app-container">        

@@ -66,12 +66,35 @@
 }
 
 .kill-btn {
-  background: #a00;
+  background: #7c3aed; /* purple */
   color: #fff;
+}
+.theater-container {
+  background-color: #111;
+  color: #eee;
+  padding: 24px;
+  border-radius: 10px;
+  width: min(720px, 90vw);
+  margin: 0 auto;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.5);
+  transition: transform 500ms ease-in-out;
+}
+.theater-container.flipped {
+  transform: rotate(180deg);
+}
+.theater-container.flipped {
+  transform: rotate(180deg);
 }
 
 .kill-btn:hover {
-  background: #c00;
+  background: #6d28d9; /* darker purple */
+}
+.flip-btn {
+  background: #0ea5e9; /* cyan */
+  color: #fff;
+}
+.flip-btn:hover {
+  background: #0284c7; /* darker cyan */
 }
 
 /* Event log */

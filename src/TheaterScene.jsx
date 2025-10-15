@@ -1,10 +1,12 @@
 import React from "react";
+import Calendar from 'react-calendar';
 import "./TheaterScene.css";
 
 export default class TheaterScene extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      date: new Date(),
       caesar: {
         name: "Gaius Julius Caesar",
         status: "on his way to the Senate",
@@ -12,6 +14,7 @@ export default class TheaterScene extends React.Component {
       log: [],
   ambushActive: false,
   killedActive: false,
+  flipped: false,
     };
   }
 
@@ -31,12 +34,24 @@ export default class TheaterScene extends React.Component {
     }));
   };
 
+  handleFlip = () => {
+    this.setState((prev) => ({
+      flipped: !prev.flipped,
+      log: [
+        ...prev.log,
+        !prev.flipped ? "View flipped upside down" : "View restored",
+      ],
+    }));
+  };
+
   render() {
-  const { caesar, log, ambushActive, killedActive } = this.state;
+  const { caesar, log, ambushActive, killedActive, flipped } = this.state;
     const { location, time, caesarAttire, dagger } = this.props;
 
+const today = new Date();
+
     return (
-      <div className="theater-container">
+  <div className={`theater-container${flipped ? " flipped" : ""}`}>
         <h2 className="scene-title">React Theater — Julius Caesar</h2>
 
   {/* Non-violent animated stage with Caesar and senators */}
@@ -97,6 +112,9 @@ export default class TheaterScene extends React.Component {
           <button className="btn kill-btn" onClick={this.handleKill}>
             Kill Caesar
           </button>
+          <button className="btn flip-btn" onClick={this.handleFlip}>
+            Flip View
+          </button>
         </div>
 
         <div className="event-log">
@@ -107,6 +125,12 @@ export default class TheaterScene extends React.Component {
             ))}
           </ul>
         </div>
+
+
+        <div>
+            <Calendar onChange={()=> {this.setState({ date: today }) }} value={today} />
+        </div>
+
       </div>
     );
   }
