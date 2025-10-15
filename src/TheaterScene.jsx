@@ -37,7 +37,7 @@ export default class TheaterScene extends React.Component {
 
     return (
       <div className="theater-container">
-        <h2 className="scene-title">Theater Scene</h2>
+        <h2 className="scene-title">React Theater — Julius Caesar</h2>
 
   {/* Non-violent animated stage with Caesar and senators */}
         <div
